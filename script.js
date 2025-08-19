@@ -146,12 +146,6 @@ const products = [
   P("AB Steam Room Panel & Lights", "steam-bath-sauna", "steam room lights",
     "Complete accessory kit with LED lights and control panel.",
     { Lights: "IP65", ControlPanel: "Touch", Voltage: "230V", Warranty: "1 year" }),
-  P("AB Aroma & Ozone Kit", "steam-bath-sauna", "aroma steam spa kit",
-    "Aromatherapy reservoir with ozone hygiene system.",
-    { Aroma: "Reservoir", Ozone: "Injector", Compatible: "All SB series", Build: "SS 304" }),
-  P("AB Steam Cabin Glass Door", "steam-bath-sauna", "steam bath glass door",
-    "Tempered glass steam door with magnetic seal.",
-    { Glass: "8 mm tempered", Size: "Custom", Hinge: "SS 304", Seal: "Magnetic" })
 ];
 
 // Link related products (4 from same category for each)
