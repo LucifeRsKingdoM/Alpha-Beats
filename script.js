@@ -516,10 +516,10 @@ for (const p of products) {
 
 // Testimonials (placeholder data — edit freely)
 const testimonials = [
-  { name: "Karthik R.", company: "Bengaluru Apparel Pvt Ltd", rating: 5, quote: "Solid build quality. Our pressing line uptime improved a lot." },
-  { name: "Neha M.", company: "Urban Laundry", rating: 5, quote: "Great vacuum tables and quick support from the team." },
-  { name: "Javed S.", company: "FitPro Gym", rating: 4, quote: "Steam bath generator is reliable and easy to maintain." },
-  { name: "Sahana K.", company: "Boutique Studio", rating: 5, quote: "Portable steam generator is perfect for sampling." }
+  { name: "Karthik R.", company: "Bengaluru Apparel Pvt Ltd", rating: 5, Quotation: "Solid build quality. Our pressing line uptime improved a lot." },
+  { name: "Neha M.", company: "Urban Laundry", rating: 5, Quotation: "Great vacuum tables and quick support from the team." },
+  { name: "Javed S.", company: "FitPro Gym", rating: 4, Quotation: "Steam bath generator is reliable and easy to maintain." },
+  { name: "Sahana K.", company: "Boutique Studio", rating: 5, Quotation: "Portable steam generator is perfect for sampling." }
 ];
 
 // Build indices
@@ -529,15 +529,20 @@ for (const p of products) productById[p.id] = p;
 // ---------- DOM population ----------
 function initContacts() {
   const e = SITE.email, ph = SITE.phone, ph2 = SITE.phone2;
+  
+  // Email links
   const emailLinks = [byId("contactEmail"), byId("footerEmail")].filter(Boolean);
-  const phoneLinks = [byId("contactPhone"), byId("footerPhone")].filter(Boolean);
-  const phone2Links = [byId("footerPhone2")].filter(Boolean);
-  
   emailLinks.forEach(a => { a.textContent = e; a.href = `mailto:${e}`; });
-  phoneLinks.forEach(a => { a.textContent = ph; a.href = `tel:${ph.replace(/\s/g, "")}`; });
-  phone2Links.forEach(a => { a.textContent = ph2; a.href = `tel:${ph2.replace(/\s/g, "")}`; });
   
-  // ... rest of the function (keep everything else the same)
+  // First phone number - only footerPhone
+  const phoneLinks = [byId("footerPhone")].filter(Boolean);
+  phoneLinks.forEach(a => { a.textContent = ph; a.href = `tel:${ph.replace(/\s/g, "")}`; });
+  
+  // Second phone number - footerPhone2
+  const phone2Links = [byId("footerPhone2")].filter(Boolean);
+  phone2Links.forEach(a => { a.textContent = ph2; a.href = `tel:${ph2.replace(/\s/g, "")}`; });
+
+  // Social links
   const ws = SITE.whatsapp;
   const soc = {
     socWhatsApp: ws,
@@ -550,9 +555,11 @@ function initContacts() {
     const a = byId(id); if (a && href) a.href = href;
   });
 
+  // Year
   const year = new Date().getFullYear();
   const y = byId("year"); if (y) y.textContent = year;
 }
+
 
 function renderTeasers() {
   const row = byId("teaserRow");
@@ -582,13 +589,13 @@ function productCard(p) {
       <p>${p.short}</p>
       <div class="actions">
         <a class="btn primary sm" href="#product/${p.id}">View Details</a>
-        <button class="btn ghost sm" data-quote="${p.name}">Get Quote</button>
+        <button class="btn ghost sm" data-Quotation="${p.name}">Get Quotation</button>
       </div>
     </div>`;
-  // quote button
-  card.querySelector('[data-quote]').addEventListener('click', (e) => {
+  // Quotation button
+  card.querySelector('[data-Quotation]').addEventListener('click', (e) => {
     e.preventDefault();
-    openQuote(p.name);
+    openQuotation(p.name);
   });
   return card;
 }
@@ -649,7 +656,7 @@ function renderTestimonials() {
     const stars = "★".repeat(t.rating) + "☆".repeat(5 - t.rating);
     card.innerHTML = `
       <div class="stars" aria-label="${t.rating} stars">${stars}</div>
-      <p>${t.quote}</p>
+      <p>${t.Quotation}</p>
       <div class="meta">
         <div>${t.name}</div>
         <div class="muted">${t.company}</div>
@@ -714,7 +721,7 @@ function renderProductView(id) {
     <div class="container">
       <div class="pv-header">
                 <a class="pv-back" href="#category/${p.categorySlug}">← Back to ${cat?.name || 'Products'}</a>
-        <button class="btn primary sm" data-quote="${p.name}">Get Quote</button>
+        <button class="btn primary sm" data-Quotation="${p.name}">Get Quotation</button>
       </div>
       <div class="pv-grid">
         <div class="pv-figure">
@@ -728,7 +735,7 @@ function renderProductView(id) {
           <p>${p.short}</p>
           <ul class="pv-bullets">${bullets}</ul>
           <div class="pv-sticky-actions">
-            <button class="btn primary" data-quote="${p.name}">Request Quote</button>
+            <button class="btn primary" data-Quotation="${p.name}">Request Quotation</button>
             <button class="btn ghost">Download Brochure</button>
           </div>
           <div class="pv-tabs">
@@ -789,11 +796,11 @@ function renderProductView(id) {
     });
   });
 
-  // Quote buttons in product view
-  $$('[data-quote]').forEach(btn => {
+  // Quotation buttons in product view
+  $$('[data-Quotation]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      openQuote(btn.dataset.quote);
+      openQuotation(btn.dataset.Quotation);
     });
   });
 
@@ -836,8 +843,8 @@ function handleRoute() {
   }
 }
 
-// ---------- Quote modal ----------
-function openQuote(productName = "") {
+// ---------- Quotation modal ----------
+function openQuotation(productName = "") {
   const productField = byId("formProduct");
   if (productField && productName) {
     productField.value = productName;
@@ -851,7 +858,7 @@ function openQuote(productName = "") {
 
 // ---------- Form handler ----------
 function initForm() {
-  const form = byId("quoteForm");
+  const form = byId("QuotationForm");
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const data = new FormData(form);
@@ -859,7 +866,7 @@ function initForm() {
     
     // Create email body
     const body = `
-New quote request from ${obj.name}
+New Quotation request from ${obj.name}
 
 Company: ${obj.company}
 Email: ${obj.email}
@@ -869,14 +876,14 @@ Message: ${obj.message}
 Prefer WhatsApp: ${obj.whatsapp ? 'Yes' : 'No'}
     `.trim();
 
-    const subject = `Quote Request - ${obj.product || 'ALPHA BEATS Product'}`;
+    const subject = `Quotation Request - ${obj.product || 'ALPHA BEATS Product'}`;
     const mailto = `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     
     // Open email client
     window.location.href = mailto;
     
     // Show success message
-    alert("Quote request prepared! Your email client should open. If not, please email us directly at " + SITE.email);
+    alert("Quotation request prepared! Your email client should open. If not, please email us directly at " + SITE.email);
     form.reset();
   });
 }
@@ -957,12 +964,12 @@ function initSmoothLinks() {
   });
 }
 
-// ---------- Global quote button handler ----------
-function initGlobalQuoteButtons() {
-  $$('[data-open-quote]').forEach(btn => {
+// ---------- Global Quotation button handler ----------
+function initGlobalQuotationButtons() {
+  $$('[data-open-Quotation]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      openQuote();
+      openQuotation();
     });
   });
 }
@@ -976,7 +983,7 @@ function init() {
   initMobileMenu();
   initForm();
     initSmoothLinks();
-  initGlobalQuoteButtons();
+  initGlobalQuotationButtons();
   
   // Handle initial route
   handleRoute();

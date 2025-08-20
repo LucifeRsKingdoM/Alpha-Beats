@@ -623,20 +623,20 @@ a {
   letter-spacing: 1px;
 }
 
-/* ============ Contact / Quote ============ */
+/* ============ Contact / Quotation ============ */
 .contact-grid {
   align-items: start
 }
 
-.quote-form label {
+.Quotation-form label {
   display: block;
   font-size: 13px;
   color: #475467;
   margin-bottom: 6px
 }
 
-.quote-form input,
-.quote-form textarea {
+.Quotation-form input,
+.Quotation-form textarea {
   width: 100%;
   padding: 12px 12px;
   border: 1px solid #e5e7eb;
@@ -646,8 +646,8 @@ a {
   background: #fff
 }
 
-.quote-form input:focus,
-.quote-form textarea:focus {
+.Quotation-form input:focus,
+.Quotation-form textarea:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(47, 128, 237, .15)
 }
