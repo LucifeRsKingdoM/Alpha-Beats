@@ -869,6 +869,26 @@ a {
   .pv-grid {
     grid-template-columns: 1.1fr .9fr
   }
+<<<<<<< HEAD
+=======
+}
+
+@media (min-width:800px) {
+  .rec-grid {
+    grid-template-columns: repeat(4, 1fr)
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  html {
+    scroll-behavior: auto
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none
+  }
+>>>>>>> bdce27ca73f7a65802602bd6c58892071b7143f3
 }
 
 @media (min-width:800px) {
