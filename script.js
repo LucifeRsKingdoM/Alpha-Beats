@@ -1025,3 +1025,43 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
     // navigator.serviceWorker.register('/sw.js');
   });
 }
+
+
+// ---------- Animated Scroll to Top Button with Logo ----------
+function createScrollToTopButton() {
+  // Create the button
+  const scrollBtn = document.createElement('div');
+  scrollBtn.className = 'scroll-to-top';
+  scrollBtn.innerHTML = `
+    <img src="assets/logo.png" alt="ALPHA BEATS Logo" />
+    <div class="progress-fill"></div>
+  `;
+  
+  // Add to body
+  document.body.appendChild(scrollBtn);
+  
+  // Click handler
+  scrollBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    history.pushState(null, null, '#home');
+  });
+  
+  // Update progress based on scroll
+  function updateScrollProgress() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    
+    const progressFill = scrollBtn.querySelector('.progress-fill');
+    progressFill.style.height = `${Math.min(scrollPercent, 100)}%`;
+  }
+  
+  // Listen for scroll events
+  window.addEventListener('scroll', updateScrollProgress);
+  
+  // Initial update
+  updateScrollProgress();
+}
+
+// Initialize the scroll to top button
+createScrollToTopButton();
