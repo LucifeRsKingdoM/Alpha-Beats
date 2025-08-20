@@ -342,7 +342,6 @@ quote-form input, .quote-form textarea{
 }
 
 
-
 /* ========== Reveal animations ========== */
 
 @media (prefers-reduced-motion:reduce){
@@ -399,9 +398,6 @@ quote-form input, .quote-form textarea{
     z-index: 1;
 }
 
-
 .social-media a:hover{
     transform: scale(1.1);
 }
-
-
