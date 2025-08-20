@@ -7,7 +7,8 @@
 // ---------- Site config (edit these) ----------
 const SITE = {
   email: "mail.yogeshv@gmail.com", // change to real email
-  phone: "+91 9008587582",          // change to real number
+  phone: "+91 9008587582",
+  phone2: "+91 8867136365",          // change to real number
   whatsapp: "https://wa.me/919008587582",
   socials: {
     instagram: "#",
@@ -26,12 +27,10 @@ const el = (tag, cls) => {
   if (cls) n.className = cls;
   return n;
 };
-const imgUnsplash = (query, w = 1200) =>
-  `https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=${w}&fit=crop&auto=format`; // fallback factory image
 
-const img = (query, w = 1200) =>
-  `https://source.unsplash.com/${w}x${Math.round(w*0.75)}/?${encodeURIComponent(query)},industrial`;
-
+// Put your images in an 'images' folder next to your HTML file
+// Example: images/boiler1.jpg, images/boiler1-detail.jpg, etc.
+ 
 // ---------- Data ----------
 const categories = [
   {
@@ -39,23 +38,31 @@ const categories = [
     name: "Steam Boilers",
     slug: "steam-boilers",
     description: "Reliable electric, diesel and gas-fired boilers for garment and industrial applications.",
-    image: img("steam boiler machinery")
+    image: "assets/boiler.webp"  // Add your category image here
   },
   {
     id: 2,
     name: "Garment Finishing Systems",
     slug: "garment-finishing",
     description: "Steam irons, vacuum iron tables, spotting and complete finishing stations.",
-    image: img("industrial ironing table")
+    image: "assets/table.jpeg"  // Add your category image here
   },
   {
     id: 3,
     name: "Steam Bath & Sauna",
     slug: "steam-bath-sauna",
     description: "Steam bath generators, sauna heaters and wellness accessories for gyms and spas.",
-    image: img("spa steam sauna")
+    image: "assets/bath.jpg"  // Add your category image here
+  },
+  {
+    id: 4,
+    name: "Spare Parts",
+    slug: "spare-parts",
+    description: "High-quality spare parts and components for all steam equipment.",
+    image: "assets/parts.webp"  // Add your spare parts category image
   }
 ];
+
 
 // Product generator helpers
 let pid = 1;
@@ -74,85 +81,429 @@ const P = (name, categorySlug, q, short, specs) => ({
 });
 
 // 8 products per category
+// ---------- Products Data ----------
 const products = [
-  // Steam Boilers
-  P("AB Compact Steam Boiler 9kW", "steam-boilers", "electric steam boiler 9kW",
-    "Compact electric boiler for small units and boutiques.",
-    { Power: "9 kW", Capacity: "12 kg/hr", Voltage: "415V", Phase: "3 Ph", Body: "SS 304", Safety: "Dry-run, PRV" }),
-  P("AB Industrial Steam Boiler 18kW", "steam-boilers", "electric steam boiler 18kW",
-    "Higher output electric boiler for continuous pressing lines.",
-    { Power: "18 kW", Capacity: "24 kg/hr", Voltage: "415V", Phase: "3 Ph", Control: "Digital", Safety: "Dual thermostat" }),
-    P("AB Gas Fired Boiler 100 kg/hr", "steam-boilers", "gas fired steam boiler",
-    "Efficient gas-fired steam boiler with rapid steam generation.",
-    { Fuel: "PNG/LPG", Output: "100 kg/hr", Pressure: "7 bar", Efficiency: "88%", Control: "Auto ignition", Safety: "Flame failure" }),
-  P("AB Diesel Boiler 200 kg/hr", "steam-boilers", "diesel fired steam boiler",
-    "Heavy-duty diesel-fired unit for industrial laundries.",
-    { Fuel: "HSD", Output: "200 kg/hr", Pressure: "10 bar", Coil: "IBR quality", Safety: "High-temp cutoff" }),
-  P("AB Twin Electric Boiler 24kW", "steam-boilers", "twin electric steam boiler",
-    "Twin-heater module for redundancy and energy saving.",
-    { Power: "2 x 12 kW", Output: "32 kg/hr", Voltage: "415V", Phase: "3 Ph", Control: "Step control", Tank: "SS 304" }),
-  P("AB High Pressure Boiler 300 kg/hr", "steam-boilers", "high pressure industrial boiler",
-    "For pressing lines and dyeing auxiliaries needing stable pressure.",
-    { Output: "300 kg/hr", Pressure: "12 bar", Feedwater: "Auto", Blowdown: "Manual/Auto", Mounting: "Skid" }),
-  P("AB Portable Steam Generator 6kW", "steam-boilers", "portable steam generator",
-    "Plug‑and‑play portable generator for sampling rooms.",
-    { Power: "6 kW", Output: "8 kg/hr", Tank: "8 L", Voltage: "230V", Mobility: "Wheels" }),
-  P("AB Vertical Steam Boiler 150 kg/hr", "steam-boilers", "vertical steam boiler",
-    "Compact vertical design with small footprint.",
-    { Output: "150 kg/hr", Fuel: "Diesel/Gas", Pressure: "10 bar", Shell: "MS/SS", Control: "Digital" }),
+  // === STEAM BOILERS CATEGORY ===
+  {
+    id: "p1",
+    name: "Your Product Name Here",
+    categorySlug: "steam-boilers",
+    images: [
+      "images/your-product-1.jpg",      // Main product image
+      "images/your-product-1-detail.jpg", // Detail view image  
+      "images/your-product-1-close.jpg"   // Close-up image
+    ],
+    short: "Your product short description here.",
+    specs: {
+      "Power": "Your power spec",
+      "Capacity": "Your capacity spec", 
+      "Voltage": "Your voltage spec",
+      "Phase": "Your phase spec",
+      "Body": "Your body material",
+      "Safety": "Your safety features"
+    },
+    related: [] // Will be filled automatically
+  },
+  {
+    id: "p2", 
+    name: "Your Second Product Name",
+    categorySlug: "steam-boilers",
+    images: [
+      "images/your-product-2.jpg",
+      "images/your-product-2-detail.jpg", 
+      "images/your-product-2-close.jpg"
+    ],
+    short: "Your second product description.",
+    specs: {
+      "Power": "18 kW",
+      "Capacity": "24 kg/hr", 
+      "Voltage": "415V",
+      "Phase": "3 Ph",
+      "Control": "Digital",
+      "Safety": "Dual thermostat"
+    },
+    related: []
+  },
+  {
+    id: "p1",
+    name: "Your Product Name Here",
+    categorySlug: "steam-boilers",
+    images: [
+      "images/your-product-1.jpg",      // Main product image
+      "images/your-product-1-detail.jpg", // Detail view image  
+      "images/your-product-1-close.jpg"   // Close-up image
+    ],
+    short: "Your product short description here.",
+    specs: {
+      "Power": "Your power spec",
+      "Capacity": "Your capacity spec", 
+      "Voltage": "Your voltage spec",
+      "Phase": "Your phase spec",
+      "Body": "Your body material",
+      "Safety": "Your safety features"
+    },
+    related: [] // Will be filled automatically
+  },
+  {
+    id: "p2", 
+    name: "Your Second Product Name",
+    categorySlug: "steam-boilers",
+    images: [
+      "images/your-product-2.jpg",
+      "images/your-product-2-detail.jpg", 
+      "images/your-product-2-close.jpg"
+    ],
+    short: "Your second product description.",
+    specs: {
+      "Power": "18 kW",
+      "Capacity": "24 kg/hr", 
+      "Voltage": "415V",
+      "Phase": "3 Ph",
+      "Control": "Digital",
+      "Safety": "Dual thermostat"
+    },
+    related: []
+  },
+  {
+    id: "p1",
+    name: "Your Product Name Here",
+    categorySlug: "steam-boilers",
+    images: [
+      "images/your-product-1.jpg",      // Main product image
+      "images/your-product-1-detail.jpg", // Detail view image  
+      "images/your-product-1-close.jpg"   // Close-up image
+    ],
+    short: "Your product short description here.",
+    specs: {
+      "Power": "Your power spec",
+      "Capacity": "Your capacity spec", 
+      "Voltage": "Your voltage spec",
+      "Phase": "Your phase spec",
+      "Body": "Your body material",
+      "Safety": "Your safety features"
+    },
+    related: [] // Will be filled automatically
+  },
+  {
+    id: "p2", 
+    name: "Your Second Product Name",
+    categorySlug: "steam-boilers",
+    images: [
+      "images/your-product-2.jpg",
+      "images/your-product-2-detail.jpg", 
+      "images/your-product-2-close.jpg"
+    ],
+    short: "Your second product description.",
+    specs: {
+      "Power": "18 kW",
+      "Capacity": "24 kg/hr", 
+      "Voltage": "415V",
+      "Phase": "3 Ph",
+      "Control": "Digital",
+      "Safety": "Dual thermostat"
+    },
+    related: []
+  },
+  // Add more steam boiler products here...
 
-  // Garment Finishing Systems
-  P("AB Pro Steam Iron with 3L Boiler", "garment-finishing", "industrial steam iron with boiler",
-    "Professional steam iron with inbuilt 3L boiler and safety controls.",
-    { Boiler: "3 L", Power: "2.2 kW", Voltage: "230V", Hose: "Silicone", Safety: "Low-water alarm" }),
-  P("AB Vacuum Ironing Table VT‑01", "garment-finishing", "vacuum ironing table",
-    "Standard vacuum table for moisture extraction and fast drying.",
-    { Bed: "1200 x 750 mm", Motor: "0.5 HP", Heater: "800 W", Height: "Adjustable", Addons: "Sleeve arm" }),
-  P("AB Heated Vacuum Table HVT‑02", "garment-finishing", "heated vacuum table industrial",
-    "Heated top with vacuum for professional finishing rooms.",
-    { Bed: "1300 x 800 mm", TopHeat: "1 kW", Motor: "0.75 HP", Thermostat: "Digital", Phase: "1/3 Ph" }),
-  P("AB Stain Removal Machine SR‑01", "garment-finishing", "stain removal spotting machine",
-    "Two-gun spotting station with steam/air and built‑in vacuum.",
-    { Guns: "2", Functions: "Steam/Air/Vacuum", Material: "SS 304", Lighting: "LED", Tank: "Solvent tray" }),
-  P("AB Spotting Table ST‑02", "garment-finishing", "spotting table laundry",
-    "Ergonomic spotting table with SS top and waste collection.",
-    { Top: "SS 304", Arm: "Suction", Compressor: "External", Fan: "0.5 HP", Drain: "Integrated" }),
-  P("AB Steam Iron Box SI‑900", "garment-finishing", "steam iron box",
-    "Heavy-duty steam iron with Teflon shoe and long-life solenoid.",
-    { Power: "1000 W", Soleplate: "Teflon", Cord: "3 m", Pressure: "Up to 5 bar", Weight: "1.5 kg" }),
-  P("AB Double Station Vacuum Table VT‑2S", "garment-finishing", "double station vacuum table",
-    "Two-station table for high throughput lines.",
-    { Stations: "2", Motor: "1 HP", Control: "Independent", Bed: "1200 x 750 mm x2", Phase: "3 Ph" }),
-    P("AB Portable Ironing System PS‑01", "garment-finishing", "portable ironing system",
-    "Compact trolley system with boiler + iron for mobile operations.",
-    { Boiler: "5 L", Mobility: "Trolley", Hose: "3 m", Power: "3 kW", Safety: "Pressure switch" }),
+  // === GARMENT FINISHING CATEGORY ===
+  {
+    id: "p9", // Continue numbering from where steam boilers end
+    name: "Your Garment Product Name",
+    categorySlug: "garment-finishing", 
+    images: [
+      "images/garment-product-1.jpg",
+      "images/garment-product-1-detail.jpg",
+      "images/garment-product-1-close.jpg"
+    ],
+    short: "Your garment finishing product description.",
+    specs: {
+      "Boiler": "3 L",
+      "Power": "2.2 kW", 
+      "Voltage": "230V",
+      "Hose": "Silicone",
+      "Safety": "Low-water alarm"
+    },
+    related: []
+  },
+  {
+    id: "p9", // Continue numbering from where steam boilers end
+    name: "Your Garment Product Name",
+    categorySlug: "garment-finishing", 
+    images: [
+      "images/garment-product-1.jpg",
+      "images/garment-product-1-detail.jpg",
+      "images/garment-product-1-close.jpg"
+    ],
+    short: "Your garment finishing product description.",
+    specs: {
+      "Boiler": "3 L",
+      "Power": "2.2 kW", 
+      "Voltage": "230V",
+      "Hose": "Silicone",
+      "Safety": "Low-water alarm"
+    },
+    related: []
+  },
+  {
+    id: "p9", // Continue numbering from where steam boilers end
+    name: "Your Garment Product Name",
+    categorySlug: "garment-finishing", 
+    images: [
+      "images/garment-product-1.jpg",
+      "images/garment-product-1-detail.jpg",
+      "images/garment-product-1-close.jpg"
+    ],
+    short: "Your garment finishing product description.",
+    specs: {
+      "Boiler": "3 L",
+      "Power": "2.2 kW", 
+      "Voltage": "230V",
+      "Hose": "Silicone",
+      "Safety": "Low-water alarm"
+    },
+    related: []
+  },
+  
+  // Add more garment finishing products...
 
-  // Steam Bath & Sauna
-  P("AB Steam Bath Generator SB‑6", "steam-bath-sauna", "steam bath generator",
-    "Home/club steam generator with digital controller.",
-    { Power: "6 kW", Voltage: "230/415V", Tank: "SS 304", Control: "Digital panel", Protection: "Overheat, dry" }),
-  P("AB Steam Bath Generator SB‑9", "steam-bath-sauna", "spa steam generator 9kW",
-    "For medium cabins in gyms and spas.",
-    { Power: "9 kW", Phase: "3 Ph", Control: "Timer + Temp", AutoFlush: "Yes", SteamOut: "SS 304" }),
-  P("AB Steam Bath Generator SB‑12", "steam-bath-sauna", "commercial steam generator 12kW",
-    "Commercial-grade continuous steam output.",
-    { Power: "12 kW", Phase: "3 Ph", AutoFlush: "Yes", Protection: "Dry, overheat", Case: "Powder coated" }),
-  P("AB Sauna Heater SH‑6", "steam-bath-sauna", "sauna heater 6kW",
-    "Efficient sauna heater for compact rooms.",
-    { Power: "6 kW", Stones: "15 kg", Control: "Analog/Digital", Material: "Stainless", Phase: "1/3 Ph" }),
-  P("AB Sauna Heater SH‑9", "steam-bath-sauna", "sauna heater 9kW",
-    "For larger sauna rooms in premium gyms.",
-    { Power: "9 kW", Controller: "Wall mount", Case: "Alu-Zn", Safety: "Thermal cut-off" }),
-  P("AB Steam Room Panel & Lights", "steam-bath-sauna", "steam room lights",
-    "Complete accessory kit with LED lights and control panel.",
-    { Lights: "IP65", ControlPanel: "Touch", Voltage: "230V", Warranty: "1 year" }),
-  P("AB Aroma & Ozone Kit", "steam-bath-sauna", "aroma steam spa kit",
-    "Aromatherapy reservoir with ozone hygiene system.",
-    { Aroma: "Reservoir", Ozone: "Injector", Compatible: "All SB series", Build: "SS 304" }),
-  P("AB Steam Cabin Glass Door", "steam-bath-sauna", "steam bath glass door",
-    "Tempered glass steam door with magnetic seal.",
-    { Glass: "8 mm tempered", Size: "Custom", Hinge: "SS 304", Seal: "Magnetic" })
+  // === STEAM BATH & SAUNA CATEGORY ===
+  {
+    id: "p17", // Continue numbering
+    name: "Your Steam Bath Product", 
+    categorySlug: "steam-bath-sauna",
+    images: [
+      "images/steam-bath-1.jpg",
+      "images/steam-bath-1-detail.jpg", 
+      "images/steam-bath-1-close.jpg"
+    ],
+    short: "Your steam bath product description.",
+    specs: {
+      "Power": "6 kW",
+      "Voltage": "230/415V",
+      "Tank": "SS 304", 
+      "Control": "Digital panel",
+      "Protection": "Overheat, dry"
+    },
+    related: []
+  },
+  {
+    id: "p17", // Continue numbering
+    name: "Your Steam Bath Product", 
+    categorySlug: "steam-bath-sauna",
+    images: [
+      "images/steam-bath-1.jpg",
+      "images/steam-bath-1-detail.jpg", 
+      "images/steam-bath-1-close.jpg"
+    ],
+    short: "Your steam bath product description.",
+    specs: {
+      "Power": "6 kW",
+      "Voltage": "230/415V",
+      "Tank": "SS 304", 
+      "Control": "Digital panel",
+      "Protection": "Overheat, dry"
+    },
+    related: []
+  },
+  {
+    id: "p17", // Continue numbering
+    name: "Your Steam Bath Product", 
+    categorySlug: "steam-bath-sauna",
+    images: [
+      "images/steam-bath-1.jpg",
+      "images/steam-bath-1-detail.jpg", 
+      "images/steam-bath-1-close.jpg"
+    ],
+    short: "Your steam bath product description.",
+    specs: {
+      "Power": "6 kW",
+      "Voltage": "230/415V",
+      "Tank": "SS 304", 
+      "Control": "Digital panel",
+      "Protection": "Overheat, dry"
+    },
+    related: []
+  },
+  {
+    id: "p17", // Continue numbering
+    name: "Your Steam Bath Product", 
+    categorySlug: "steam-bath-sauna",
+    images: [
+      "images/steam-bath-1.jpg",
+      "images/steam-bath-1-detail.jpg", 
+      "images/steam-bath-1-close.jpg"
+    ],
+    short: "Your steam bath product description.",
+    specs: {
+      "Power": "6 kW",
+      "Voltage": "230/415V",
+      "Tank": "SS 304", 
+      "Control": "Digital panel",
+      "Protection": "Overheat, dry"
+    },
+    related: []
+  },
+  // Add more steam bath products...
+
+    // === SPARE PARTS CATEGORY ===
+  {
+    id: "p100",
+    name: "Pressure Relief Valve PRV-100",
+    categorySlug: "spare-parts",
+    images: [
+      "images/prv-100-main.jpg",
+      "images/prv-100-detail.jpg", 
+      "images/prv-100-close.jpg"
+    ],
+    short: "High-quality pressure relief valve for steam boilers with adjustable settings.",
+    specs: {
+      "Model": "PRV-100",
+      "Pressure Range": "7-12 bar",
+      "Material": "SS 316",
+      "Size": "1/2 inch BSP",
+      "Type": "Spring loaded",
+      "Certification": "CE marked"
+    },
+    related: []
+  },
+  {
+    id: "p101",
+    name: "Heating Element HE-3000W",
+    categorySlug: "spare-parts",
+    images: [
+      "images/heating-element-main.jpg",
+      "images/heating-element-detail.jpg",
+      "images/heating-element-close.jpg"
+    ],
+    short: "Replacement heating element for electric steam generators.",
+    specs: {
+      "Power": "3 kW",
+      "Voltage": "230V",
+      "Material": "Stainless steel",
+      "Length": "300 mm",
+      "Thread": "1.5 inch BSP",
+      "Warranty": "1 year"
+    },
+    related: []
+  },
+  {
+    id: "p102",
+    name: "Water Level Gauge WLG-300",
+    categorySlug: "spare-parts",
+    images: [
+      "images/water-gauge-main.jpg",
+      "images/water-gauge-detail.jpg",
+      "images/water-gauge-close.jpg"
+    ],
+    short: "Glass water level indicator for accurate boiler monitoring.",
+    specs: {
+      "Length": "300 mm",
+      "Material": "Borosilicate glass",
+      "Pressure": "Up to 12 bar",
+      "Temperature": "Up to 180°C",
+      "Fittings": "BSP threaded"
+    },
+    related: []
+  },
+  {
+    id: "p103",
+    name: "Steam Trap ST-150",
+    categorySlug: "spare-parts",
+    images: [
+      "images/steam-trap-main.jpg",
+      "images/steam-trap-detail.jpg",
+      "images/steam-trap-close.jpg"
+    ],
+    short: "Thermostatic steam trap for efficient condensate removal.",
+    specs: {
+      "Type": "Thermostatic",
+      "Capacity": "150 kg/hr",
+      "Pressure": "Up to 16 bar",
+      "Material": "Cast iron body",
+      "Connections": "Screwed BSP"
+    },
+    related: []
+  },
+  {
+    id: "p104",
+    name: "Solenoid Valve SV-230",
+    categorySlug: "spare-parts",
+    images: [
+      "images/solenoid-valve-main.jpg",
+      "images/solenoid-valve-detail.jpg",
+      "images/solenoid-valve-close.jpg"
+    ],
+    short: "Electric solenoid valve for automated water feed control.",
+    specs: {
+      "Voltage": "230V AC",
+      "Pressure": "10 bar max",
+      "Size": "3/4 inch",
+      "Material": "Brass body",
+      "Response": "Fast acting"
+    },
+    related: []
+  },
+  {
+    id: "p105",
+    name: "Digital Thermostat TD-200",
+    categorySlug: "spare-parts",
+    images: [
+      "images/thermostat-main.jpg",
+      "images/thermostat-detail.jpg",
+      "images/thermostat-close.jpg"
+    ],
+    short: "Digital temperature controller with LED display and PID control.",
+    specs: {
+      "Range": "0-200°C",
+      "Display": "LED digital",
+      "Control": "PID",
+      "Accuracy": "±1°C",
+      "Output": "Relay 10A"
+    },
+    related: []
+  },
+  {
+    id: "p106",
+    name: "Pressure Gauge PG-100",
+    categorySlug: "spare-parts",
+    images: [
+      "images/pressure-gauge-main.jpg",
+      "images/pressure-gauge-detail.jpg",
+      "images/pressure-gauge-close.jpg"
+    ],
+    short: "Industrial pressure gauge for steam system monitoring.",
+    specs: {
+      "Dial Size": "100 mm",
+      "Range": "0-16 bar",
+      "Accuracy": "Class 2.5",
+      "Connection": "1/4 BSP bottom",
+      "Case": "Steel black"
+    },
+    related: []
+  },
+  {
+    id: "p107",
+    name: "Gasket Seal Kit GSK-01",
+    categorySlug: "spare-parts",
+    images: [
+      "images/gasket-kit-main.jpg",
+      "images/gasket-kit-detail.jpg",
+      "images/gasket-kit-close.jpg"
+    ],
+    short: "Complete gasket and seal set for boiler maintenance.",
+    specs: {
+      "Material": "Heat resistant rubber",
+      "Temperature": "Up to 200°C",
+      "Contents": "12 pieces",
+      "Compatibility": "PAB boilers",
+      "Storage": "Cool dry place"
+    },
+    related: []
+  }
+  // Don't forget to add a comma after your last existing product before adding these
 ];
+
 
 // Link related products (4 from same category for each)
 const mapByCat = {};
@@ -177,12 +528,16 @@ for (const p of products) productById[p.id] = p;
 
 // ---------- DOM population ----------
 function initContacts() {
-  const e = SITE.email, ph = SITE.phone;
+  const e = SITE.email, ph = SITE.phone, ph2 = SITE.phone2;
   const emailLinks = [byId("contactEmail"), byId("footerEmail")].filter(Boolean);
   const phoneLinks = [byId("contactPhone"), byId("footerPhone")].filter(Boolean);
+  const phone2Links = [byId("footerPhone2")].filter(Boolean);
+  
   emailLinks.forEach(a => { a.textContent = e; a.href = `mailto:${e}`; });
-  phoneLinks.forEach(a => { a.textContent = ph; a.href = `tel:${ph.replace(/\s+/g,'')}`; });
-
+  phoneLinks.forEach(a => { a.textContent = ph; a.href = `tel:${ph.replace(/\s/g, "")}`; });
+  phone2Links.forEach(a => { a.textContent = ph2; a.href = `tel:${ph2.replace(/\s/g, "")}`; });
+  
+  // ... rest of the function (keep everything else the same)
   const ws = SITE.whatsapp;
   const soc = {
     socWhatsApp: ws,
@@ -247,7 +602,6 @@ function renderCategories() {
     section.innerHTML = `
       <div class="category-header">
         <h2>${c.name}</h2>
-        <a class="btn ghost sm" href="#category/${c.slug}">View ${c.name}</a>
       </div>
       <div class="product-grid" id="grid-${c.slug}"></div>
     `;
@@ -280,20 +634,53 @@ function renderCategories() {
 function renderTestimonials() {
   const grid = byId("testimonialsGrid");
   grid.innerHTML = "";
-  testimonials.forEach(t => {
-    const card = el("div", "testi reveal");
-    const stars = "★★★★★★★★★★★".slice(0, t.rating);
+  
+  // Create the track container
+  const track = el("div", "testimonials-track");
+  
+  // Create enough copies for seamless infinite loop
+  const extendedTestimonials = [];
+  for (let i = 0; i < 6; i++) {
+    extendedTestimonials.push(...testimonials);
+  }
+  
+  extendedTestimonials.forEach(t => {
+    const card = el("div", "testi");
+    const stars = "★".repeat(t.rating) + "☆".repeat(5 - t.rating);
     card.innerHTML = `
-      <div class="stars" aria-label="${t.rating} stars">${"★".repeat(t.rating)}${"☆".repeat(5 - t.rating)}</div>
-      <p>“${t.quote}”</p>
+      <div class="stars" aria-label="${t.rating} stars">${stars}</div>
+      <p>${t.quote}</p>
       <div class="meta">
-        <div>— ${t.name}</div>
-        <div class="muted">• ${t.company}</div>
-      </div>`;
-    grid.appendChild(card);
+        <div>${t.name}</div>
+        <div class="muted">${t.company}</div>
+      </div>
+    `;
+    
+    // Add individual hover pause functionality
+    card.addEventListener('mouseenter', () => {
+      track.style.animationPlayState = 'paused';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      track.style.animationPlayState = 'running';
+    });
+    
+    track.appendChild(card);
   });
-  observeReveals();
+  
+  grid.appendChild(track);
+  
+  // Force immediate animation start
+  setTimeout(() => {
+    const trackElement = grid.querySelector('.testimonials-track');
+    if (trackElement) {
+      trackElement.style.animationPlayState = 'running';
+    }
+  }, 0);
 }
+
+
+
 
 // ---------- Product detail ----------
 function renderProductView(id) {
