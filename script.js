@@ -1014,24 +1014,18 @@ const portfolioData = {
     { image: 'assets/boiler.webp', caption: 'High-pressure steam system for garment factory' },
     { image: 'assets/table.jpeg', caption: 'Compact electric boiler for boutique setup' },
     { image: 'assets/parts.webp', caption: 'Gas-fired boiler with automatic controls' },
-    { image: 'https://images.unsplash.com/photo-1581092919007-bda8a9e7e6a1?w=400', caption: 'Twin boiler system for continuous operation' },
-    { image: 'https://images.unsplash.com/photo-1581092921307-5c9b68d0b03a?w=400', caption: 'Portable steam generator for sampling room' }
   ],
   portfolio2: [
     { image: 'assets/bath.jpg', caption: 'Professional vacuum ironing table setup' },
     { image: 'assets/boiler.webp', caption: 'Steam iron with industrial boiler system' },
     { image: 'assets/table.jpeg', caption: 'Heated vacuum table for garment finishing' },
-    { image: 'https://images.unsplash.com/photo-1586717795678-d4e8b9c2a1f3?w=400', caption: 'Stain removal spotting station installation' },
-    { image: 'https://images.unsplash.com/photo-1586717798765-e9f4d8c3b2a1?w=400', caption: 'Double station vacuum table for high volume' },
-    { image: 'https://images.unsplash.com/photo-1586717799876-f5e6d9d4c5b2?w=400', caption: 'Portable ironing system with trolley setup' }
+    { image: 'assets/parts.webp', caption: 'Gas-fired boiler with automatic controls' },
   ],
   portfolio3: [
     { image: 'assets/bath.jpg', caption: 'Luxury steam bath installation at spa resort' },
     { image: 'assets/boiler.webp', caption: 'Commercial steam generator for gym facility' },
     { image: 'assets/table.jpeg', caption: 'Sauna heater with premium stone arrangement' },
     { image: 'assets/parts.webp', caption: 'Steam room with LED lighting and control panel' },
-    { image: 'https://images.unsplash.com/photo-1571019617654-f6e9g8h9i4j5?w=400', caption: 'Aroma therapy system with ozone purification' },
-    { image: 'https://images.unsplash.com/photo-1571019618765-g9h0i1j2k6l7?w=400', caption: 'Tempered glass steam cabin door installation' }
   ]
 };
 
