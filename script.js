@@ -603,7 +603,9 @@ function productCard(p) {
 function renderCategories() {
   const wrap = byId("categoryBlocks");
   wrap.innerHTML = "";
-  categories.forEach(c => {
+  
+  categories.forEach((c, index) => {
+    // Create category section
     const section = el("section", "category-block container");
     section.id = `cat-${c.slug}`;
     section.innerHTML = `
@@ -613,10 +615,39 @@ function renderCategories() {
       <div class="product-grid" id="grid-${c.slug}"></div>
     `;
     wrap.appendChild(section);
-    // eight products per category visible
+    
+    // Add products to category
     const list = products.filter(p => p.categorySlug === c.slug).slice(0, 8);
     const grid = byId(`grid-${c.slug}`);
     list.forEach(p => grid.appendChild(productCard(p)));
+    
+    // Create and insert portfolio section after each category (except spare parts)
+    if (index < 3) { // Only for first 3 categories
+      const portfolioSection = el("section", "section light portfolio-section");
+      portfolioSection.id = `portfolio${index + 1}`;
+      
+      const portfolioTitles = [
+        "Steam Boilers Portfolio", 
+        "Garment Finishing Portfolio", 
+        "Steam Bath & Sauna Portfolio"
+      ];
+      
+      portfolioSection.innerHTML = `
+        <div class="container">
+          <h2 class="section-title reveal">${portfolioTitles[index]}</h2>
+          <div class="portfolio-marquee" data-direction="left">
+            <div class="portfolio-track" id="portfolioTrack${index + 1}">
+              <!-- Portfolio items will be injected here -->
+            </div>
+          </div>
+        </div>
+      `;
+      
+      wrap.appendChild(portfolioSection);
+      
+      // Initialize the portfolio
+      renderPortfolio(`portfolio${index + 1}`, `portfolioTrack${index + 1}`);
+    }
   });
 
   // Footer quick links (categories)
@@ -637,6 +668,7 @@ function renderCategories() {
   // Observe reveals
   observeReveals();
 }
+
 
 function renderTestimonials() {
   const grid = byId("testimonialsGrid");
@@ -974,6 +1006,96 @@ function initGlobalQuotationButtons() {
   });
 }
 
+
+// Portfolio Data - Replace with your actual images and descriptions
+const portfolioData = {
+  portfolio1: [
+    { image: 'assets/bath.jpg', caption: 'Industrial steam boiler installation at textile unit' },
+    { image: 'assets/boiler.webp', caption: 'High-pressure steam system for garment factory' },
+    { image: 'assets/table.jpeg', caption: 'Compact electric boiler for boutique setup' },
+    { image: 'assets/parts.webp', caption: 'Gas-fired boiler with automatic controls' },
+    { image: 'https://images.unsplash.com/photo-1581092919007-bda8a9e7e6a1?w=400', caption: 'Twin boiler system for continuous operation' },
+    { image: 'https://images.unsplash.com/photo-1581092921307-5c9b68d0b03a?w=400', caption: 'Portable steam generator for sampling room' }
+  ],
+  portfolio2: [
+    { image: 'assets/bath.jpg', caption: 'Professional vacuum ironing table setup' },
+    { image: 'assets/boiler.webp', caption: 'Steam iron with industrial boiler system' },
+    { image: 'assets/table.jpeg', caption: 'Heated vacuum table for garment finishing' },
+    { image: 'https://images.unsplash.com/photo-1586717795678-d4e8b9c2a1f3?w=400', caption: 'Stain removal spotting station installation' },
+    { image: 'https://images.unsplash.com/photo-1586717798765-e9f4d8c3b2a1?w=400', caption: 'Double station vacuum table for high volume' },
+    { image: 'https://images.unsplash.com/photo-1586717799876-f5e6d9d4c5b2?w=400', caption: 'Portable ironing system with trolley setup' }
+  ],
+  portfolio3: [
+    { image: 'assets/bath.jpg', caption: 'Luxury steam bath installation at spa resort' },
+    { image: 'assets/boiler.webp', caption: 'Commercial steam generator for gym facility' },
+    { image: 'assets/table.jpeg', caption: 'Sauna heater with premium stone arrangement' },
+    { image: 'assets/parts.webp', caption: 'Steam room with LED lighting and control panel' },
+    { image: 'https://images.unsplash.com/photo-1571019617654-f6e9g8h9i4j5?w=400', caption: 'Aroma therapy system with ozone purification' },
+    { image: 'https://images.unsplash.com/photo-1571019618765-g9h0i1j2k6l7?w=400', caption: 'Tempered glass steam cabin door installation' }
+  ]
+};
+
+// Render Portfolio Items
+function renderPortfolio(portfolioId, trackId) {
+  const track = document.getElementById(trackId);
+  const items = portfolioData[portfolioId];
+  
+  if (!track || !items) return;
+  
+  // Duplicate items for seamless loop
+  const allItems = [...items, ...items];
+  
+  track.innerHTML = allItems.map(item => `
+    <div class="portfolio-item">
+      <img src="${item.image}" alt="${item.caption}" loading="lazy">
+      <div class="caption">${item.caption}</div>
+    </div>
+  `).join('');
+}
+
+// Initialize Portfolio Direction Control
+function setPortfolioDirection(trackId, direction) {
+  const track = document.getElementById(trackId);
+  if (!track) return;
+  
+  track.classList.remove('direction-left', 'direction-right');
+  track.classList.add(`direction-${direction}`);
+  
+  // Update animation
+  if (direction === 'right') {
+    track.style.animationName = 'marqueeRight';
+  } else {
+    track.style.animationName = 'marqueeLeft';
+  }
+}
+
+
+// Initialize Portfolios - now only sets directions
+function initPortfolios() {
+  // Set initial direction (all left-to-right) - will be applied when portfolios are created
+  setTimeout(() => {
+    setPortfolioDirection('portfolioTrack1', 'right');
+    setPortfolioDirection('portfolioTrack2', 'left');
+    setPortfolioDirection('portfolioTrack3', 'right');
+  }, 100);
+}
+
+
+// Direction Control Functions (Use these to change direction)
+function changePortfolio1Direction(right) {
+  setPortfolioDirection('portfolioTrack1', direction); // 'left' or 'right'
+}
+
+function changePortfolio2Direction(left) {
+  setPortfolioDirection('portfolioTrack2', direction); // 'left' or 'right'
+}
+
+function changePortfolio3Direction(right) {
+  setPortfolioDirection('portfolioTrack3', direction); // 'left' or 'right'
+}
+
+
+
 // ---------- Initialize ----------
 function init() {
   initContacts();
@@ -982,8 +1104,9 @@ function init() {
   renderTestimonials();
   initMobileMenu();
   initForm();
-    initSmoothLinks();
+  initSmoothLinks();
   initGlobalQuotationButtons();
+  initPortfolios();
   
   // Handle initial route
   handleRoute();
@@ -1072,3 +1195,8 @@ function createScrollToTopButton() {
 
 // Initialize the scroll to top button
 createScrollToTopButton();
+
+
+
+
+
