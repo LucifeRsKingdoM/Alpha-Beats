@@ -594,8 +594,8 @@ function productCard(p) {
     </div>`;
   // Quotation button
   card.querySelector('[data-Quotation]').addEventListener('click', (e) => {
-    e.preventDefault();
-    openQuotation(p.name);
+  e.preventDefault();
+  openQuotation(p.name, p.short);
   });
   return card;
 }
@@ -719,131 +719,292 @@ function renderTestimonials() {
 }
 
 
-
-
-// ---------- Product detail ----------
+// ---------- Product detail ---------- 
 function renderProductView(id) {
   const p = productById[id];
   if (!p) return;
 
-  const view = byId("productView");
-  view.classList.remove("hidden");
+  const modal = byId("productModal");
   const cat = categories.find(c => c.slug === p.categorySlug);
+  
+  // Get first 4 specs for preview
+  const specsPreview = Object.entries(p.specs).slice(0, 4)
+    .map(([k,v]) => `
+      <div class="spec-item">
+        <strong>${k}</strong>
+        ${v}
+      </div>
+    `).join("");
 
-  const bullets = Object.entries(p.specs).slice(0, 5)
-    .map(([k,v]) => `<li><strong>${k}:</strong> ${v}</li>`).join("");
-
+  // Full specifications table
   const specsRows = Object.entries(p.specs)
     .map(([k,v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join("");
 
-  // Related
+  // Related products
   const related = p.related.map(id => productById[id]).filter(Boolean);
   const recHTML = related.map(r => `
-    <a class="product-card" href="#product/${r.id}">
-      <div class="cover"><img loading="lazy" src="${r.images[0]}" alt="${r.name}"></div>
-      <div class="pad">
+    <div class="related-product-card" onclick="renderProductView('${r.id}')">
+      <div class="related-product-image">
+        <img loading="lazy" src="${r.images[0]}" alt="${r.name}">
+      </div>
+      <div class="related-product-info">
         <h4>${r.name}</h4>
         <p>${r.short}</p>
-        <div class="actions"><span class="btn primary sm">View</span></div>
+        <div class="related-product-actions">
+          <span class="btn primary sm">View Details</span>
+        </div>
       </div>
-    </a>
+    </div>
   `).join("");
 
-  view.innerHTML = `
-    <div class="container">
-      <div class="pv-header">
-                <a class="pv-back" href="#category/${p.categorySlug}">← Back to ${cat?.name || 'Products'}</a>
-        <button class="btn primary sm" data-Quotation="${p.name}">Get Quotation</button>
+  // Action buttons component (will be used twice)
+  const actionButtonsHTML = `
+    <div class="product-actions-section">
+      <div class="price-range-display">
+        <div class="price-label">Price Range</div>
+        <div class="price-amount">₹20,000 - ₹1,80,000</div>
+        <div class="price-note">*Prices may vary based on specifications</div>
       </div>
-      <div class="pv-grid">
-        <div class="pv-figure">
-          <img class="pv-main" id="pvMain" src="${p.images[0]}" alt="${p.name}">
-          <div class="pv-thumbs" id="pvThumbs">
-            ${p.images.map((img, i) => `<img src="${img}" alt="${p.name} ${i+1}" data-index="${i}" ${i===0?'class="active"':''}>`).join('')}
-          </div>
-        </div>
-        <div class="pv-info">
-          <h1 class="title">${p.name}</h1>
-          <p>${p.short}</p>
-          <ul class="pv-bullets">${bullets}</ul>
-          <div class="pv-sticky-actions">
-            <button class="btn primary" data-Quotation="${p.name}">Request Quotation</button>
-            <button class="btn ghost">Download Brochure</button>
-          </div>
-          <div class="pv-tabs">
-            <div class="pv-tab active" data-tab="overview">Overview</div>
-            <div class="pv-tab" data-tab="specs">Specifications</div>
-            <div class="pv-tab" data-tab="related">Related</div>
-          </div>
-        </div>
+      <div class="action-buttons-row">
+        <button class="action-btn btn-primary-action" data-product-quotation="${p.name}">
+          <span>💬</span>
+          Request Quotation
+        </button>
+        <button class="action-btn btn-outline-action" onclick="closeProductModal()">
+          <span>←</span>
+          Back to ${cat?.name || 'Products'}
+        </button>
       </div>
-      <div class="pv-sections container">
-        <div class="pv-section" data-section="overview">
-          <div class="card">
-            <h3>Product Overview</h3>
-            <p>${p.short} This industrial-grade solution is designed for continuous operation with premium materials and safety features.</p>
-            <p>Suitable for industrial laundries, garment manufacturing, hotels, and commercial applications requiring reliable steam generation.</p>
+    </div>
+  `;
+
+  modal.innerHTML = `
+    <div class="product-modal-content">
+      <div class="product-modal-header">
+        <div class="product-modal-title">${p.name}</div>
+        <div class="product-modal-subtitle">${cat?.name || 'Industrial Steam Solutions'}</div>
+        <button class="product-modal-close" id="closeProductModal">&times;</button>
+      </div>
+      <div class="product-modal-body">
+        <div class="product-content-grid">
+          <div class="product-image-section">
+            <img class="main-product-image" id="mainProductImage" src="${p.images[0]}" alt="${p.name}">
+            <div class="product-thumbnails" id="productThumbnails">
+              ${p.images.map((img, i) => `
+                <img src="${img}" alt="${p.name} ${i+1}" class="product-thumbnail ${i===0?'active':''}" data-index="${i}">
+              `).join('')}
+            </div>
+          </div>
+          
+          <div class="product-details-section">
+            <div class="product-badge">⚡ Industrial Grade</div>
+            <h1 class="product-title">${p.name}</h1>
+            <p class="product-description">${p.short}</p>
+            
+            <div class="product-specs-preview">
+              <h4>🔧 Key Specifications</h4>
+              <div class="specs-list">
+                ${specsPreview}
+              </div>
+            </div>
+            
+            ${actionButtonsHTML}
           </div>
         </div>
-        <div class="pv-section hidden" data-section="specs">
-          <div class="card">
-            <h3>Technical Specifications</h3>
-            <table class="specs-table">
-              <tbody>${specsRows}</tbody>
-            </table>
+        
+        <!-- All Content Displayed Sequentially -->
+        <div class="sequential-content">
+          
+          <!-- Overview Section -->
+          <div class="content-section">
+            <div class="content-card">
+              <h3>🏭 Product Overview</h3>
+              <div class="overview-content">
+                <p><strong>Product Description:</strong> ${p.short} This industrial-grade solution is designed for continuous operation with premium materials and safety features.</p>
+                
+                <div class="overview-highlights">
+                  <div class="highlight-item">
+                    <h4>🎯 Applications</h4>
+                    <p>Suitable for industrial laundries, garment manufacturing, hotels, and commercial applications requiring reliable steam generation.</p>
+                  </div>
+                  
+                  <div class="highlight-item">
+                    <h4>🛡️ Safety Features</h4>
+                    <p>Equipped with multiple safety systems including pressure relief valves, temperature controls, and automatic shut-off mechanisms.</p>
+                  </div>
+                  
+                  <div class="highlight-item">
+                    <h4>⚡ Performance</h4>
+                    <p>Engineered for maximum efficiency and reliability in demanding industrial environments with minimal maintenance requirements.</p>
+                  </div>
+                  
+                  <div class="highlight-item">
+                    <h4>🔧 Installation & Support</h4>
+                    <p>Professional installation service available with comprehensive technical support and warranty coverage across India.</p>
+                  </div>
+                </div>
+                
+                <div class="features-grid">
+                  <div class="feature-box">
+                    <span class="feature-icon">🏭</span>
+                    <h4>Industrial Grade</h4>
+                    <p>Built to withstand continuous operation in demanding environments</p>
+                  </div>
+                  <div class="feature-box">
+                    <span class="feature-icon">🛠️</span>
+                    <h4>Easy Maintenance</h4>
+                    <p>Designed for minimal maintenance with accessible components</p>
+                  </div>
+                  <div class="feature-box">
+                    <span class="feature-icon">⚡</span>
+                    <h4>Energy Efficient</h4>
+                    <p>Optimized for maximum efficiency and reduced operating costs</p>
+                  </div>
+                  <div class="feature-box">
+                    <span class="feature-icon">🔒</span>
+                    <h4>Safety First</h4>
+                    <p>Multiple safety features ensure secure operation</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="pv-section hidden" data-section="related">
-          <div class="card">
-            <h3>Related Products</h3>
-            <div class="rec-grid">${recHTML}</div>
+          
+          <!-- Full Specifications Section -->
+          <div class="content-section">
+            <div class="content-card">
+              <h3>⚙️ Complete Technical Specifications</h3>
+              <div class="specs-table-container">
+                <table class="detailed-specs-table">
+                  <thead>
+                    <tr>
+                      <th>Specification</th>
+                      <th>Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${specsRows}
+                  </tbody>
+                </table>
+              </div>
+              
+              <div class="additional-info">
+                <div class="info-section">
+                  <h4>📦 Package Includes</h4>
+                  <ul>
+                    <li>Main unit with all standard components</li>
+                    <li>Installation manual and technical documentation</li>
+                    <li>Standard warranty certificate</li>
+                    <li>Basic maintenance kit</li>
+                  </ul>
+                </div>
+                
+                <div class="info-section">
+                  <h4>🚚 Shipping & Delivery</h4>
+                  <ul>
+                    <li>Free shipping across major cities in India</li>
+                    <li>Professional installation service available</li>
+                    <li>Delivery within 7-15 working days</li>
+                    <li>Insurance coverage included</li>
+                  </ul>
+                </div>
+                
+                <div class="info-section">
+                  <h4>🔧 Service & Support</h4>
+                  <ul>
+                    <li>24/7 technical support helpline</li>
+                    <li>Regular maintenance service available</li>
+                    <li>Genuine spare parts guarantee</li>
+                    <li>Extended warranty options</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <!-- Second Action Buttons Section -->
+          <div class="content-section">
+            ${actionButtonsHTML}
+          </div>
+          
+          <!-- Related Products Section -->
+          <div class="content-section">
+            <div class="content-card">
+              <h3>🔗 Related Products</h3>
+              <p>Customers who viewed this product also considered these similar items:</p>
+              <div class="related-products-grid">
+                ${recHTML}
+              </div>
+            </div>
+          </div>
+          
         </div>
       </div>
     </div>
   `;
 
-  // Image gallery
-  const main = byId("pvMain");
-  const thumbs = $$("#pvThumbs img");
-  thumbs.forEach(thumb => {
+  // Show modal
+  modal.classList.add("show");
+  document.body.style.overflow = "hidden";
+
+  // Image gallery functionality
+  const mainImage = byId("mainProductImage");
+  const thumbnails = $$(".product-thumbnail");
+  
+  thumbnails.forEach(thumb => {
     thumb.addEventListener("click", () => {
       const idx = parseInt(thumb.dataset.index);
-      main.src = p.images[idx];
-      thumbs.forEach(t => t.classList.remove("active"));
+      mainImage.src = p.images[idx];
+      thumbnails.forEach(t => t.classList.remove("active"));
       thumb.classList.add("active");
     });
   });
 
-  // Tabs
-  const tabs = $$(".pv-tab");
-  const sections = $$(".pv-section");
-  tabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      const target = tab.dataset.tab;
-      tabs.forEach(t => t.classList.remove("active"));
-      sections.forEach(s => s.classList.add("hidden"));
-      tab.classList.add("active");
-      $(`[data-section="${target}"]`).classList.remove("hidden");
-    });
+  // Close modal functionality
+  const closeBtn = byId("closeProductModal");
+  closeBtn.addEventListener("click", closeProductModal);
+  
+  // Close on outside click
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeProductModal();
+    }
   });
 
-  // Quotation buttons in product view
-  $$('[data-Quotation]').forEach(btn => {
+  // Quotation buttons with product details (both instances)
+  const quotationBtns = modal.querySelectorAll('[data-product-quotation]');
+  quotationBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      openQuotation(btn.dataset.Quotation);
+      // Close product modal first
+      closeProductModal();
+      // Open quotation with product details
+      setTimeout(() => {
+        openQuotation(p.name, p.short);
+      }, 300);
     });
   });
-
-  // Scroll to top
-  view.scrollIntoView({ behavior: 'smooth' });
 }
+
+
+function closeProductModal() {
+  const modal = byId("productModal");
+  modal.classList.remove("show");
+  document.body.style.overflow = "auto";
+  
+  // Update URL to remove product hash
+  const currentHash = location.hash;
+  if (currentHash.includes('#product/')) {
+    history.pushState(null, null, '#products');
+  }
+}
+
 
 function hideProductView() {
-  const view = byId("productView");
-  view.classList.add("hidden");
+  // This is now handled by the modal system
+  closeProductModal();
 }
+
 
 // ---------- Routing ----------
 function scrollToCategory(slug) {
@@ -859,14 +1020,13 @@ function handleRoute() {
   const hash = location.hash || "#home";
   const [, route, param] = hash.match(/#(\w+)(?:\/(.+))?/) || [];
 
-  // Hide product view by default
-  hideProductView();
-
   if (route === "product" && param) {
     renderProductView(param);
   } else if (route === "category" && param) {
     scrollToCategory(param);
   } else {
+    // Close any open modals when navigating away
+    closeProductModal();
     // Default home or other sections - smooth scroll
     const target = $(hash);
     if (target) {
@@ -875,50 +1035,138 @@ function handleRoute() {
   }
 }
 
+
 // ---------- Quotation modal ----------
-function openQuotation(productName = "") {
-  const productField = byId("formProduct");
-  if (productField && productName) {
-    productField.value = productName;
-  }
-  // Scroll to contact form
-  const contact = byId("contact");
-  if (contact) {
-    contact.scrollIntoView({ behavior: 'smooth' });
+function openQuotation(productName = "", productDescription = "") {
+  const modal = byId("quotationModal");
+  const productInfo = byId("productInfo");
+  const productNameEl = byId("productName");
+  const productDescEl = byId("productDescription");
+  const messageField = byId("customerMessage");
+  
+  // Show modal
+  modal.classList.add("show");
+  document.body.style.overflow = "hidden";
+  
+  // If product specified, show product info and pre-fill message
+  if (productName) {
+    productInfo.style.display = "block";
+    productNameEl.textContent = productName;
+    productDescEl.textContent = productDescription || "Premium quality industrial steam solution";
+    
+    // Pre-fill the message with product details
+    messageField.value = `I'm interested in: ${productName}\n\nPlease provide quotation with:\n- Technical specifications\n- Pricing details\n- Delivery time\n- Warranty information`;
+  } else {
+    productInfo.style.display = "none";
+    messageField.value = "";
   }
 }
 
+function closeQuotation() {
+  const modal = byId("quotationModal");
+  modal.classList.remove("show");
+  document.body.style.overflow = "auto";
+  
+  // Reset form
+  const form = byId("quotationForm");
+  form.reset();
+}
+
+
 // ---------- Form handler ----------
 function initForm() {
-  const form = byId("QuotationForm");
+  const form = byId("quotationForm");
+  const modal = byId("quotationModal");
+  const closeBtn = byId("closeModal");
+  
+  // Form submission
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const data = new FormData(form);
     const obj = Object.fromEntries(data);
     
-    // Create email body
-    const body = `
-New Quotation request from ${obj.name}
-
-Company: ${obj.company}
-Email: ${obj.email}
-Phone: ${obj.phone}
-Product: ${obj.product}
-Message: ${obj.message}
-Prefer WhatsApp: ${obj.whatsapp ? 'Yes' : 'No'}
-    `.trim();
-
-    const subject = `Quotation Request - ${obj.product || 'ALPHA BEATS Product'}`;
-    const mailto = `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    // Validate required fields
+    if (!obj.name || !obj.phone) {
+      alert("Please fill in your name and phone number.");
+      return;
+    }
     
-    // Open email client
-    window.location.href = mailto;
+    // Get product info if available
+    const productInfo = byId("productInfo");
+    const isProductQuotation = productInfo.style.display !== "none";
+    let productName = "";
+    let productDesc = "";
+    
+    if (isProductQuotation) {
+      productName = byId("productName").textContent;
+      productDesc = byId("productDescription").textContent;
+    }
+    
+    // Create WhatsApp message
+    let message = `🔥 *ALPHA BEATS - Quotation Request*\n\n`;
+    message += `👤 *Name:* ${obj.name}\n`;
+    message += `📱 *Phone:* ${obj.phone}\n\n`;
+    
+    if (isProductQuotation) {
+      message += `🔧 *Product Interested:* ${productName}\n`;
+      message += `📝 *Product Info:* ${productDesc}\n\n`;
+    }
+    
+    message += `💬 *Requirements:*\n${obj.message || 'Standard quotation requested'}\n\n`;
+    message += `⭐ *Request Details:*\n`;
+    message += `• Technical specifications\n`;
+    message += `• Best pricing\n`;
+    message += `• Delivery timeline\n`;
+    message += `• Warranty information\n\n`;
+    message += `---\n*Sent from ALPHA BEATS website*`;
+
+    // Your WhatsApp number
+    const whatsappNumber = "919008587582";
+    
+    // Create WhatsApp URL with pre-filled message
+    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    
+    // Open WhatsApp
+    window.open(whatsappURL, '_blank');
+    
+    // Close modal and reset form
+    setTimeout(() => {
+      closeQuotation();
+    }, 500);
     
     // Show success message
-    alert("Quotation request prepared! Your email client should open. If not, please email us directly at " + SITE.email);
-    form.reset();
+    alert("Opening WhatsApp... Your message is pre-filled. Just click Send! 🚀");
   });
+  
+  // Close modal handlers
+  closeBtn.addEventListener("click", closeQuotation);
+  
+  // Close on outside click
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeQuotation();
+    }
+  });
+  
+  // Close on Escape key
+  // Add this to the initForm function after the existing Escape key handler:
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      const quotationModal = byId("quotationModal");
+      const productModal = byId("productModal");
+      
+      if (quotationModal && quotationModal.classList.contains("show")) {
+        closeQuotation();
+      }
+      if (productModal && productModal.classList.contains("show")) {
+        closeProductModal();
+      }
+    }
+  });
+
 }
+
+
 
 // ---------- Reveal animations ----------
 function observeReveals() {
@@ -1001,10 +1249,11 @@ function initGlobalQuotationButtons() {
   $$('[data-open-Quotation]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      openQuotation();
+      openQuotation(); // Opens general quotation form
     });
   });
 }
+
 
 
 // Portfolio Data - Replace with your actual images and descriptions

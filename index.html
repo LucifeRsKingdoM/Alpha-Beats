@@ -93,8 +93,11 @@
     <!-- Category sections will be injected here -->
     <section id="categoryBlocks" class="section"></section>
 
-    <!-- Product Detail View (routed) -->
-    <section id="productView" class="product-view section hidden" aria-live="polite"></section>
+    <!-- Product View Modal -->
+    <div class="product-modal-overlay" id="productModal">
+      <!-- Content will be dynamically inserted here -->
+    </div>
+
 
     <!-- Testimonials -->
     <section id="testimonials" class="section light">
@@ -108,8 +111,8 @@
     <section id="contact" class="section">
       <div class="container grid2 contact-grid">
         <div class="reveal">
-          <h2 class="section-title">Get a Custom Quotation </h2>
-          <p>Tell us your requirement. We’ll get back with configuration and pricing.</p>
+          <h2 class="section-title">Get a Custom Quotation</h2>
+          <p>Tell us your requirement. Click submit to send your details directly via WhatsApp.</p>
           <ul class="contact-points">
             <li><strong>Email:</strong> <a id="contactEmail" href="mailto:">mail.yogeshv@gmail.com</a></li><br>
             <li><strong>Phone:</strong> <a id="footerPhone2" href="#">+91 8867136365</a></li>
@@ -120,57 +123,74 @@
                     <a href="#"><i class='bx bxl-instagram'></i></a>
                     <span></span>
                 </div>
-
                 <div class="bg-icon">
                     <a href="#"><i class='bx bxl-facebook'></i></a>
                     <span></span>
                 </div>
-
                 <div class="bg-icon">
                     <a href="#"><i class='bx bxl-whatsapp'></i></a>
                     <span></span>
                 </div>
-
-                 <div class="bg-icon">
+                <div class="bg-icon">
                     <a href="#"><i class='bx bxl-google'></i></a>
                     <span></span>
                 </div>
-
                 <div class="bg-icon">
                     <a href="#"><i class='bx bxl-twitter'></i></a>
                     <span></span>
                 </div>
-                
             </div>
           </ul>
         </div>
         <div class="card reveal delay-1">
-          <form id="QuotationForm" class="Quotation-form" autocomplete="on">
-            <div class="grid2">
-              <div>
-                <label>Name</label>
-                <input type="text" name="name" placeholder="Your name" required />
-              </div>
-            </div>
-            <div class="grid2">
-              <div>
-                <label>Phone / WhatsApp</label>
-                <input type="tel" name="phone" placeholder="+91 ..." required />
-              </div>
-            </div>
-            <div>
-              <label>Message</label>
-              <textarea name="message" rows="4" placeholder="Brief requirement, capacity, phase, budget…"></textarea>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn primary">Request Quotation</button>
-              <button type="reset" class="btn ghost">Reset</button>
-            </div>
-            <small class="muted">Just submit, Your Requirements Our team will reach you as soon as possible.</small>
-          </form>
+          <h3>Quick Contact</h3>
+          <p>For instant quotations, click the button below to open our WhatsApp quotation form.</p>
+          <button class="btn primary w-100" data-open-Quotation>Open Quotation Form</button>
         </div>
       </div>
     </section>
+
+    <!-- Modal Quotation Form -->
+    <div class="modal-overlay" id="quotationModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">
+            💬 WhatsApp Quotation
+            <span style="font-size: 20px;">📋</span>
+          </div>
+          <div class="modal-subtitle">Get instant quotation via WhatsApp</div>
+          <button class="modal-close" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="product-info" id="productInfo" style="display: none;">
+            <h4 id="productName">Product Name</h4>
+            <p id="productDescription">Product description</p>
+          </div>
+          <form id="quotationForm" class="modern-form">
+            <div class="form-group">
+              <input type="text" id="customerName" name="name" placeholder=" " required>
+              <label for="customerName">Your Name *</label>
+            </div>
+            
+            <div class="form-group">
+              <input type="tel" id="customerPhone" name="phone" placeholder=" " required>
+              <label for="customerPhone">Phone / WhatsApp *</label>
+            </div>
+            
+            <div class="form-group">
+              <textarea id="customerMessage" name="message" placeholder=" "></textarea>
+              <label for="customerMessage">Additional Requirements</label>
+            </div>
+            
+            <button type="submit" class="whatsapp-btn">
+              <span>📱</span>
+              Send via WhatsApp
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- Footer with Map -->
